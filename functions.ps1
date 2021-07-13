@@ -31,12 +31,12 @@ function Test-SshKeys {
 }
 
 function New-SshKeys {
-    ssh-keygen.exe -q -t rsa -f $SshPrivateKey -N [String]::Empty
+    ssh-keygen.exe -q -t rsa -f $SshPrivateKey -N """"
 }
 
 function Publish-SshKeys {
     $PublicKey = Get-Content $SshPublicKey
-    $Command = "register '" + $PublicKey + "'"
+    $Command = "register " + $PublicKey
     Invoke-SshCommand $Command
 }
 
@@ -56,12 +56,11 @@ function Test-ListenerOnVncPort {
 #region SSH connection
 function Invoke-SshCommand {
     param (
-        [string] $Command,
+        $Command,
         [string[]] $Arguments = ("")
     )
     $Username = Get-Username
     $Connection = $Username + "@" + $SshServer
-    $Arguments
     ssh -i $SshPrivateKey $Arguments $Connection $Command
 }
 
